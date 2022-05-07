@@ -1,0 +1,34 @@
+version: "3.7" # optional since v1.27.0
+services:
+  aptms-backend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: aptms-backend
+    ports:
+      - "80:80"
+    depends_on:
+      #      - redis
+      - postgres
+    networks:
+      - goapp
+  postgres:
+    hostname: postgres
+    image: postgres
+    ports:
+      - '5433:5432'
+    environment:
+      - POSTGRES_DB=aptms
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=pass
+    networks:
+      - goapp
+#  redis:
+#    image: redis:latest
+#    networks:
+#      - goapp
+#    restart: unless-stopped
+
+networks:
+  goapp:
+    driver: bridge
